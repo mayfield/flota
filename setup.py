@@ -15,21 +15,19 @@ def long_desc():
         return pypandoc.convert(README, 'rst')
 
 setup(
-    name='scalp',
-    version='1',
-    description='Snowflake Calender PagerDuty',
-    url='https://github.com/snowflakedb/calendar/',
+    name='flota',
+    version='0',
+    description='Spanish for fleet - A Docker CLI',
+    url='https://github.com/mayfield/flota/',
     long_description=long_desc(),
     packages=find_packages(),
     test_suite='test',
     install_requires=[
-        'google-api-python-client',
-        'pygerduty',
-        'shellish==2.1',
-        'pyyaml',
+        'requests-unixsocket',
+        'shellish==2.1'
     ],
     entry_points = {
-        'console_scripts': ['scalp=scalp.main:main'],
+        'console_scripts': ['flota=flota.main:main'],
     },
     include_package_data=True,
     classifiers=[
