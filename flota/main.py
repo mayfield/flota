@@ -41,7 +41,7 @@ def main():
     host = os.getenv('DOCKER_HOST')
     tlsopts = {}
     if not host:
-        url = 'http+unix://var/run/docker.sock'
+        url = 'http+unix://%2Fvar%2Frun%2Fdocker.sock'
     else:
         secure = bool(int(os.getenv('DOCKER_TLS_VERIFY', 0)))
         if secure:
