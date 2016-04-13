@@ -54,7 +54,6 @@ def main():
         else:
             proto = 'http'
         url = '%s://%s' % (proto, host.split('://', 1)[1])
-    print('url', url, tlsopts)
     root = Root()
     root.inject_context(api=DockerSession(url, tlsopts))
     root()
