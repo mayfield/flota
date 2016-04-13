@@ -1,0 +1,3 @@
+requests_unixsocket
+shellish>=2.1
+humanize

@@ -4,6 +4,9 @@ from setuptools import setup, find_packages
 
 README = 'README.md'
 
+with open('requirements.txt') as f:
+    requirements = f.readlines()
+
 
 def long_desc():
     try:
@@ -22,10 +25,7 @@ setup(
     long_description=long_desc(),
     packages=find_packages(),
     test_suite='test',
-    install_requires=[
-        'requests-unixsocket',
-        'shellish==2.1'
-    ],
+    install_requires=requirements,
     entry_points = {
         'console_scripts': ['flota=flota.main:main'],
     },
