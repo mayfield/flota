@@ -9,6 +9,16 @@ About
 A arg compatible overlay for the docker CLI.
 
 
+Docker Usage
+--------
+An automated build of flota is available on the public docker hub as
+[jmayfield/flota](https://hub.docker.com/r/jmayfield/flota/) and can be used like so...
+
+```
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock jmayfield/flota ps -a
+```
+
+
 Requirements
 --------
 * Unix-oid Platform
