@@ -25,8 +25,13 @@ class PS(shellish.Command):
         return humanize.naturaldelta(now - ts)
 
     def port_render(self, desc):
-        container = '%s/%s' % (desc['PrivatePort'], desc['Type'])
+        if desc['Type'] == 'tcp':
+            container = str(desc['PrivatePort'])
+        else:
+            container = '%s/%s' % (desc['PrivatePort'], desc['Type'])
         if 'IP' in desc:
+            if desc['IP'] == '0.0.0.0':
+                desc['IP'] = '*'
             return '%s:%s=>%s' % (desc['IP'], desc['PublicPort'], container)
         else:
             return container
@@ -52,7 +57,15 @@ class PS(shellish.Command):
             ('PORTS', lambda x: ', '.join(map(self.port_render, x['Ports']))),
             ('NAMES', self.names_getter)
         ))
-        colspec = (12, ) + (None,) * 6
+        colspec = (
+            12,
+            None,
+            None,
+            None,
+            None,
+            None,
+            {"minwidth": 16},
+        )
         t = shellish.Table(headers=fields.keys(), accessors=fields.values(),
                            columns=colspec, **self.table_options(args))
         t.print(containers)
