@@ -1,5 +1,7 @@
 
 __all__ = [
+    'images',
+    'misc',
     'ps',
-    'misc'
+    'rmi',
 ]

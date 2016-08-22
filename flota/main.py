@@ -15,7 +15,9 @@ class Root(shellish.Command):
     name = 'flota'
 
     def setup_args(self, parser):
+        self.add_subcommand(images.Images)
         self.add_subcommand(ps.PS)
+        self.add_subcommand(rmi.RMI)
         self.add_subcommand(misc.Debug)
         self.add_subcommand(contrib.Exit)
         self.add_subcommand(contrib.Help)
