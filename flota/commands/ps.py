@@ -22,7 +22,7 @@ class PS(shellish.Command):
     def created_getter(self, container):
         now = datetime.datetime.utcnow()
         ts = datetime.datetime.utcfromtimestamp(container['Created'])
-        return humanize.naturaldelta(now - ts)
+        return '%s ago' % humanize.naturaldelta(now - ts)
 
     def port_render(self, desc):
         if desc['Type'] == 'tcp':
@@ -36,8 +36,9 @@ class PS(shellish.Command):
         else:
             return container
 
-    def names_getter(self, container):
-        return ', '.join(map(lambda x: x.lstrip('/'), container['Names']))
+    def name_getter(self, container):
+        name = ', '.join(map(lambda x: x.lstrip('/'), container['Names']))
+        return name or container['Id'][:12]
 
     def image_getter(self, container):
         image = container['Image']
@@ -49,23 +50,13 @@ class PS(shellish.Command):
             params['all'] = 1
         containers = self.api.get('/containers/json', params=params).json()
         fields = collections.OrderedDict((
-            ('CONTAINER ID', lambda x: x['Id'][:12]),
+            ('NAME', self.name_getter),
             ('IMAGE', self.image_getter),
-            ('COMMAND', 'Command'),
+            ('COMMAND', lambda x: x['Command'].split()[0]),
             ('CREATED', self.created_getter),
             ('STATUS', 'Status'),
             ('PORTS', lambda x: ', '.join(map(self.port_render, x['Ports']))),
-            ('NAMES', self.names_getter)
         ))
-        colspec = (
-            12,
-            None,
-            None,
-            None,
-            None,
-            None,
-            {"minwidth": 16},
-        )
         t = shellish.Table(headers=fields.keys(), accessors=fields.values(),
-                           columns=colspec, **self.table_options(args))
+                           **self.table_options(args))
         t.print(containers)
